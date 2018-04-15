@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+     <BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+       <bottom>
+         <ProgressBar prefHeight="18.0" prefWidth="281.0" progress="0.0" BorderPane.alignment="CENTER" />
+       </bottom>
+       <top>
+         <MenuBar BorderPane.alignment="CENTER">
+           <menus>
+             <Menu mnemonicParsing="false" text="File">
+               <items>
+                 <MenuItem mnemonicParsing="false" text="Close" />
+               </items>
+             </Menu>
+             <Menu mnemonicParsing="false" text="Edit">
+               <items>
+                 <MenuItem mnemonicParsing="false" text="Delete" />
+               </items>
+             </Menu>
+             <Menu mnemonicParsing="false" text="Help">
+               <items>
+                 <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+             </Menu>
+           </menus>
+         </MenuBar>
+       </top>
+       <center>
+         <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="75.0" minWidth="47.0" BorderPane.alignment="CENTER">
+           <columnConstraints>
+             <ColumnConstraints fillWidth="false" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="30.0" />
+             <RowConstraints minHeight="10.0" prefHeight="30.0" />
+             <RowConstraints minHeight="10.0" prefHeight="30.0" />
+           </rowConstraints>
+           <children>
+             <Button mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" />
+             <Button mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+             <Button mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+           </children>
+         </GridPane>
+       </center>
+       <left>
+         <BorderPane BorderPane.alignment="CENTER">
+           <top>
+             <ToolBar BorderPane.alignment="CENTER">
+               <items>
+                 <TextField />
+                 <Button mnemonicParsing="false" text="Button" />
+               </items>
+             </ToolBar>
+           </top>
+           <center>
+             <TableView BorderPane.alignment="CENTER">
+               <columns>
+                 <TableColumn prefWidth="75.0" text="C1" />
+                 <TableColumn prefWidth="75.0" text="C2" />
+               </columns>
+             </TableView>
+           </center>
+         </BorderPane>
+       </left>
+       <right>
+         <BorderPane BorderPane.alignment="CENTER">
+           <center>
+             <TreeTableView BorderPane.alignment="CENTER">
+               <columns>
+                 <TreeTableColumn prefWidth="75.0" text="C1" />
+                 <TreeTableColumn prefWidth="75.0" text="C2" />
+               </columns>
+             </TreeTableView>
+           </center>
+           <top>
+             <ToolBar BorderPane.alignment="CENTER">
+               <items>
+                 <TextField />
+                 <Button mnemonicParsing="false" text="Button" />
+               </items>
+             </ToolBar>
+           </top>
+         </BorderPane>
+       </right>
+     </BorderPane>
+   </content>
+</ScrollPane>
