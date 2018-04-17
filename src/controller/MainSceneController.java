@@ -1,25 +1,44 @@
 package controller;
 
 import I18N.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import model.FileDetails;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import model.FileRow;
 
 
+import javax.swing.text.TabableView;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainSceneController implements Initializable{
 
     @FXML
-    TableView<FileDetails> LeftTableView;
+    TableView<FileRow> leftTableView;
     @FXML
-    TableColumn<FileDetails,String> FileName;
+    TableColumn<FileRow,String> columnFileName;
     @FXML
-    TableColumn<FileDetails,Integer> FileSize;
+    TableColumn<FileRow,Integer> columnFileSize;
+    @FXML
+    TableColumn<FileRow,Integer> columnFileDate;
+    @FXML
+    TableView<FileRow> rightTableView;
+    @FXML
+    TableColumn<FileRow,String> columnFileName2;
+    @FXML
+    TableColumn<FileRow,Integer> columnFileSize2;
+    @FXML
+    TableColumn<FileRow,Integer> columnFileDate2;
     @FXML
     Button buttonCut;
     @FXML
@@ -31,28 +50,34 @@ public class MainSceneController implements Initializable{
     @FXML
     Button buttonSearch2;
     @FXML
-    private TableColumn columnDate;
+    Menu menuLanguage;
     @FXML
-    private TableColumn columnDate2;
+    MenuItem menuLanguagePL;
     @FXML
-    private TableColumn columnName;
+    MenuItem menuLanguageEN;
     @FXML
-    private TableColumn columnName2;
+    TextField leftSearchField;
     @FXML
-    private TableColumn columnSize;
-    @FXML
-    private TableColumn columnSize2;
-    @FXML
-    private Menu menuLanguage;
-    @FXML
-    private MenuItem menuLanguagePL;
-    @FXML
-    private MenuItem menuLanguageEN;
+    TextField rightSearchField;
+
+
+    private FileRow selectedFile;
+
+    private TabableView selectedTable;
 
 
     ResourceBundle resources;
 
     private I18N i18n;
+
+    public ObservableList<FileRow> getFiles(){
+        ObservableList<FileRow> files = FXCollections.observableArrayList();
+        files.add(new FileRow("tmp",123, "10.02.2018"));
+        files.add(new FileRow("tmp2",1231235, "10.02.2018"));
+        files.add(new FileRow("tmp3",13123, "10.02.2018"));
+        files.add(new FileRow("tmp4",1312, "10.02.2018"));
+        return files;
+    }
 
 
 
@@ -61,8 +86,24 @@ public class MainSceneController implements Initializable{
         this.resources = resources;
         i18n = new I18N();
         bindTranslations();
-        /*FileName.setCellValueFactory(new PropertyValueFactory<FileDetails,String>("name"));
-        FileSize.setCellValueFactory(new PropertyValueFactory<FileDetails,Integer>("size"));*/
+        prepareTableView();
+
+
+        leftSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            loadFileFormDirectory(newValue,leftTableView);
+        });
+        rightSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            loadFileFormDirectory(newValue,rightTableView);
+        });
+    }
+
+    private void prepareTableView(){
+        columnFileName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size"));
+        columnFileDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        columnFileName2.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnFileSize2.setCellValueFactory(new PropertyValueFactory<>("size"));
+        columnFileDate2.setCellValueFactory(new PropertyValueFactory<>("date"));
     }
 
     private void bindTranslations(){
@@ -73,12 +114,12 @@ public class MainSceneController implements Initializable{
         i18n.addElementToTranslate(new TranslateButton("button.search",buttonSearch));
         i18n.addElementToTranslate(new TranslateButton("button.search",buttonSearch2));
         //table columns
-        i18n.addElementToTranslate(new TranslateTableColumn("column.date", columnDate));
-        i18n.addElementToTranslate(new TranslateTableColumn("column.date", columnDate2));
-        i18n.addElementToTranslate(new TranslateTableColumn("column.name", columnName));
-        i18n.addElementToTranslate(new TranslateTableColumn("column.name", columnName2));
-        i18n.addElementToTranslate(new TranslateTableColumn("column.size", columnSize));
-        i18n.addElementToTranslate(new TranslateTableColumn("column.size", columnSize2));
+        i18n.addElementToTranslate(new TranslateTableColumn("column.date", columnFileDate));
+        i18n.addElementToTranslate(new TranslateTableColumn("column.date", columnFileDate2));
+        i18n.addElementToTranslate(new TranslateTableColumn("column.name", columnFileName));
+        i18n.addElementToTranslate(new TranslateTableColumn("column.name", columnFileName2));
+        i18n.addElementToTranslate(new TranslateTableColumn("column.size", columnFileSize));
+        i18n.addElementToTranslate(new TranslateTableColumn("column.size", columnFileSize2));
         //menu
         i18n.addElementToTranslate(new TranslateMenu("menu.language", menuLanguage));
         //menu items
@@ -96,5 +137,31 @@ public class MainSceneController implements Initializable{
         ResourceBundle bundle = ResourceBundle.getBundle("bundles.message", new Locale("en", "EN"));
         resources = bundle;
         i18n.changeLanguage(resources);
+    }
+
+    public void onSelectFileFromLeft(){
+        FileRow file = leftTableView.getSelectionModel().getSelectedItem();
+        System.out.println();
+    }
+
+    public void onClickLeftSearchButton(){
+        System.out.println("fc");
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Open Resource File");
+        File dir = directoryChooser.showDialog(buttonSearch.getScene().getWindow());
+        leftSearchField.setText(dir.getAbsolutePath());
+    }
+
+    private void loadFileFormDirectory(String path, TableView tableView){
+        File dir = new File(path);
+        if(!dir.exists() || !dir.isDirectory()){
+            return;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        ObservableList<FileRow> observableList = FXCollections.observableArrayList();
+        for(File file : dir.listFiles()){
+            observableList.add(new FileRow(file.getName(),file.length(), sdf.format(file.lastModified())));
+        }
+        tableView.setItems(observableList);
     }
 }

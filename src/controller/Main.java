@@ -14,7 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader fxmlLoader = new FXMLLoader();
-        ResourceBundle resources = ResourceBundle.getBundle("bundles.message", new Locale("en", "EN"));
+        ResourceBundle resources = ResourceBundle.getBundle("bundles.message");
         Parent root = fxmlLoader.load(getClass().getResource("MainScene.fxml"),resources);
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 600, 450));
