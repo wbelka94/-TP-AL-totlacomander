@@ -1,7 +1,6 @@
-package I18N;
+package components.I18N;
 
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
 
 import java.util.ResourceBundle;
 

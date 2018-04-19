@@ -1,4 +1,4 @@
-package I18N;
+package components.I18N;
 
 import java.util.*;
 

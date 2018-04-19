@@ -1,14 +1,13 @@
-package I18N;
+package components.I18N;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
 
 import java.util.ResourceBundle;
 
-public class TranslateTableColumn extends TranslateElement {
-    private TableColumn element;
+public class TranslateButton extends TranslateElement {
+    private Button element;
 
-    public TranslateTableColumn(String key, TableColumn element) {
+    public TranslateButton(String key, Button element) {
         super(key);
         this.element = element;
     }

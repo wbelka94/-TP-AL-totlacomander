@@ -1,13 +1,13 @@
-package I18N;
+package components.I18N;
 
-import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 
 import java.util.ResourceBundle;
 
-public class TranslateButton extends TranslateElement {
-    private Button element;
+public class TranslateMenu extends TranslateElement {
+    private Menu element;
 
-    public TranslateButton(String key, Button element) {
+    public TranslateMenu(String key, Menu element) {
         super(key);
         this.element = element;
     }

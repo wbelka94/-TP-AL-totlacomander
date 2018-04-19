@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainSceneController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scenes.MainSceneController">
     <top>
         <VBox prefHeight="34.0" prefWidth="713.0" BorderPane.alignment="CENTER">
             <children>
@@ -30,7 +30,7 @@
                 <ToolBar prefHeight="0.0" prefWidth="713.0">
                     <items>
                         <Button fx:id="buttonCut" mnemonicParsing="false" text="%button.cut" />
-                        <Button fx:id="buttonCopy" mnemonicParsing="false" text="%button.copy" />
+                        <Button fx:id="buttonCopy" mnemonicParsing="false" onAction="#onClickCopyButton" text="%button.copy" />
                         <Button fx:id="buttonPaste" mnemonicParsing="false" text="%button.paste" />
                   <Button mnemonicParsing="false" text="%button.delete" />
                     </items>
@@ -46,7 +46,7 @@
                         <ToolBar prefHeight="28.0" prefWidth="353.0">
                             <items>
                                 <Label text="Label" />
-                                <TextField fx:id="leftSearchField" onAction="#onClickLeftSearchButton" />
+                                <TextField fx:id="leftSearchField" maxWidth="1.7976931348623157E308" onAction="#onClickLeftSearchButton" text="C:\" />
                                 <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onClickLeftSearchButton" text="%button.search" />
                             </items>
                         </ToolBar>
@@ -67,8 +67,8 @@
                         <ToolBar prefHeight="27.0" prefWidth="352.0">
                             <items>
                                 <Label text="Label" />
-                                <TextField fx:id="rightSearchField" />
-                                <Button fx:id="buttonSearch2" mnemonicParsing="false" text="%button.search" />
+                                <TextField fx:id="rightSearchField" text="C:\" />
+                                <Button fx:id="buttonSearch2" mnemonicParsing="false" onAction="#onClickRightSearchButton" text="%button.search" />
                             </items>
                         </ToolBar>
                         <TableView fx:id="rightTableView" prefHeight="5000.0" prefWidth="296.0">

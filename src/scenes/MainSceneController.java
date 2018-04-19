@@ -1,6 +1,8 @@
-package controller;
+package scenes;
 
-import I18N.*;
+import components.I18N.*;
+import components.files_operations.copyOperation;
+import components.files_operations.filesSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,16 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import model.FileRow;
 
 
 import javax.swing.text.TabableView;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -65,6 +64,8 @@ public class MainSceneController implements Initializable{
 
     private TabableView selectedTable;
 
+    private filesSet filesSet;
+
 
     ResourceBundle resources;
 
@@ -83,10 +84,15 @@ public class MainSceneController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        filesSet = new filesSet();
         this.resources = resources;
         i18n = new I18N();
         bindTranslations();
         prepareTableView();
+
+        loadFileFormDirectory("C:/",leftTableView);
+        loadFileFormDirectory("C:/",rightTableView);
 
 
         leftSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -95,6 +101,8 @@ public class MainSceneController implements Initializable{
         rightSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
             loadFileFormDirectory(newValue,rightTableView);
         });
+
+        leftTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     private void prepareTableView(){
@@ -140,16 +148,37 @@ public class MainSceneController implements Initializable{
     }
 
     public void onSelectFileFromLeft(){
-        FileRow file = leftTableView.getSelectionModel().getSelectedItem();
-        System.out.println();
+        filesSet.setSourceDirectoryPath(leftSearchField.getText());
+        filesSet.setDestinationDirectoryPath(rightSearchField.getText());
+        filesSet.removeFiles();
+        for( FileRow file : leftTableView.getSelectionModel().getSelectedItems()){
+            filesSet.addFile(leftSearchField.getText()+"/"+file.getName());
+        }
+        if(filesSet.getFilesPaths().size() > 0){
+            buttonPaste.setDisable(false);
+        }
+        else {
+            buttonPaste.setDisable(true);
+        }
+        System.out.println(filesSet.getFilesPaths().size());
     }
 
     public void onClickLeftSearchButton(){
-        System.out.println("fc");
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Open Resource File");
+        directoryChooser.setTitle(resources.getString("directoryChooserTitle"));
         File dir = directoryChooser.showDialog(buttonSearch.getScene().getWindow());
-        leftSearchField.setText(dir.getAbsolutePath());
+        try {
+            leftSearchField.setText(dir.getAbsolutePath());
+        }catch (Exception e){}
+    }
+
+    public void onClickRightSearchButton(){
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(resources.getString("directoryChooserTitle"));
+        File dir = directoryChooser.showDialog(buttonSearch2.getScene().getWindow());
+        try {
+            rightSearchField.setText(dir.getAbsolutePath());
+        }catch (Exception e){}
     }
 
     private void loadFileFormDirectory(String path, TableView tableView){
@@ -163,5 +192,16 @@ public class MainSceneController implements Initializable{
             observableList.add(new FileRow(file.getName(),file.length(), sdf.format(file.lastModified())));
         }
         tableView.setItems(observableList);
+    }
+
+    public void onClickCopyButton(){
+        filesSet.setFileOperation(new copyOperation());
+        loadFileFormDirectory(leftSearchField.getText(),leftTableView);
+        loadFileFormDirectory(rightSearchField.getText(),rightTableView);
+
+    }
+
+    public void onClickPasteButton(){
+
     }
 }
