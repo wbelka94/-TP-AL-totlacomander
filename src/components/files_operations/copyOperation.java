@@ -24,7 +24,8 @@ public class copyOperation implements fileOperation {
         while (it.hasNext()) {
             String filePath = (String) it.next();
             File file = new File(filePath);
-            if (file.exists()) {
+            File file2 = new File(destinationDirectory+"/"+file.getName());
+            if (file2.exists()) {
                 if(noAll){
                     it.remove();
                     continue;
